@@ -1,6 +1,6 @@
 <launch>
   <group ns="pfoe">
-    <node pkg="pfoe" name="pfoe_node" type="pfoe_node"/>
+    <node pkg="pfoe" name="pfoe_node" type="pfoe_node" output="screen" />
 <!--    <node pkg="pfoe" name="pattern1" type="input_pattern1.py"/> -->
   </group>
 </launch>

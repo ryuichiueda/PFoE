@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <fstream>
 using namespace std;
 
 class Event{
@@ -12,7 +13,7 @@ public:
 	string action;
 	double reward;
 
-	void print(void);
+	void print(ofstream *);
 };
 
 #endif

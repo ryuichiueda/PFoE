@@ -1,7 +1,19 @@
 #!/usr/bin/python
 
 import rospy
-from pfoe.srv import EventRegist
+from pfoe.srv import EventRegist, FlushData
+
+def print_episode():
+    rospy.wait_for_service('/pfoe/flush_data')
+    try:
+        p = rospy.ServiceProxy('/pfoe/flush_data', FlushData)
+        res = p("/tmp/episode","episode")
+    except rospy.ServiceException, e:
+        print "Service call failed: %s"%e
+    else:
+        return False
+
+    return True
 
 def add_event(n):
     rospy.wait_for_service('/pfoe/event_regist')
@@ -28,3 +40,5 @@ if __name__ == "__main__":
         print n
         add_event(n);
         n = n + 1
+
+    print_episode()

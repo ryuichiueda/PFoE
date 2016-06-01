@@ -10,7 +10,7 @@ Event::Event(string act, string sen, double rw)
 	sensor = sen;
 }
 
-void Event::print(void)
+void Event::print(ofstream *ofs)
 {
-	cout << action << " <" << sensor << "> " << reward << endl;
+	*ofs << action << " <" << sensor << "> " << reward << endl;
 }

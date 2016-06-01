@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <fstream>
 #include "Event.h"
 using namespace std;
 
@@ -12,7 +13,7 @@ public:
 	vector<Event> events;
 
 	void append(Event e);
-	void print(void);
+	void flushData(ofstream *);
 };
 
 #endif
