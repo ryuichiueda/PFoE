@@ -1,0 +1,5 @@
+string action
+string sensor
+float64 reward
+---
+string decision

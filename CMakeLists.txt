@@ -1,12 +1,14 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(poe)
+project(pfoe)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   roscpp
+  rospy
   std_msgs
+  message_generation
 )
 
 ## System dependencies are found with CMake's conventions
@@ -50,11 +52,10 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate services in the 'srv' folder
-# add_service_files(
-#   FILES
-#   Service1.srv
-#   Service2.srv
-# )
+add_service_files(
+  FILES
+  EventRegist.srv
+)
 
 ## Generate actions in the 'action' folder
 # add_action_files(
@@ -64,7 +65,10 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate added messages and services with any dependencies listed here
-#generate_messages( DEPENDENCIES std_msgs )
+generate_messages(
+  DEPENDENCIES
+  std_msgs
+)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -97,8 +101,8 @@ find_package(catkin REQUIRED COMPONENTS
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES poe
-#  CATKIN_DEPENDS roscpp std_msgs
+#  LIBRARIES pfoe
+  CATKIN_DEPENDS message_runtime roscpp rospy std_msgs
 #  DEPENDS system_lib
 )
 
@@ -112,25 +116,25 @@ catkin_package(
 include_directories(include ${catkin_INCLUDE_DIRS} )
 
 ## Declare a C++ library
-# add_library(poe
-#   src/${PROJECT_NAME}/poe.cpp
+# add_library(pfoe
+#   src/${PROJECT_NAME}/pfoe.cpp
 # )
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
-#add_dependencies(poe ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-#add_dependencies(poe poe_generate_messages_cpp)
+#add_dependencies(pfoe ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+#add_dependencies(pfoe pfoe_generate_messages_cpp)
 
 ## Declare a C++ executable
-add_executable(poe_node src/poe_node.cpp)
+add_executable(pfoe_node src/pfoe_node.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-# add_dependencies(poe_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+# add_dependencies(pfoe_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(poe_node ${catkin_LIBRARIES})
+target_link_libraries(pfoe_node ${catkin_LIBRARIES})
 
 #############
 ## Install ##
@@ -147,7 +151,7 @@ target_link_libraries(poe_node ${catkin_LIBRARIES})
 # )
 
 ## Mark executables and/or libraries for installation
-# install(TARGETS poe poe_node
+# install(TARGETS pfoe pfoe_node
 #   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
@@ -172,7 +176,7 @@ target_link_libraries(poe_node ${catkin_LIBRARIES})
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_poe.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_pfoe.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
