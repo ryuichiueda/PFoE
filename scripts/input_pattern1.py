@@ -23,7 +23,8 @@ def add_event(n):
 
 if __name__ == "__main__":
     n = 0
-    while True:
+    #while True:
+    for i in range(5):
         print n
         add_event(n);
         n = n + 1

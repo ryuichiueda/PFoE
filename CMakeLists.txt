@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(pfoe)
 
+set(CMAKE_CXX_FLAGS "-std=c++0x ${CMAKE_CXX_FLAGS}")
+
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
@@ -183,3 +185,12 @@ target_link_libraries(pfoe_node ${catkin_LIBRARIES})
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+
+add_library(Event src/Event.cpp)
+add_library(Episode src/Episode.cpp)
+
+
+target_link_libraries(Episode Event)
+target_link_libraries(pfoe_node Event Episode ${catkin_LIBRARIES})
+add_dependencies(pfoe_node pfoe)
+

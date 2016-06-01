@@ -7,10 +7,12 @@ using namespace std;
 
 class Event{
 public:
-	Event();
-	vector<double> sensor_values;
+	Event(string, string, double);
+	string sensor;
+	string action;
 	double reward;
-	vector<double> action_params;
+
+	void print(void);
 };
 
 #endif
