@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(pfoe)
 
+set(CMAKE_CXX_FLAGS "-std=c++0x ${CMAKE_CXX_FLAGS}")
+
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
@@ -116,9 +118,9 @@ catkin_package(
 include_directories(include ${catkin_INCLUDE_DIRS} )
 
 ## Declare a C++ library
-# add_library(pfoe
-#   src/${PROJECT_NAME}/pfoe.cpp
-# )
+add_library(Event src/Event.cpp)
+add_library(Particle src/Particle.cpp)
+add_library(ParticleFilter src/ParticleFilter.cpp)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries

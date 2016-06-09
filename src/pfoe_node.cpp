@@ -1,5 +1,6 @@
 #include "ros/ros.h"
 #include "pfoe/EventRegist.h"
+#include "Event.h"
 #include <iostream>
 using namespace ros;
 

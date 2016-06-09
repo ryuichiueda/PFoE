@@ -8,9 +8,11 @@ using namespace std;
 class Event{
 public:
 	Event();
-	vector<double> sensor_values;
+	string observation;
 	double reward;
-	vector<double> action_params;
+	string action;
+
+	double compare(Event *ref);
 };
 
 #endif
