@@ -137,7 +137,7 @@ add_executable(pfoe_node src/pfoe_node.cpp)
 # add_dependencies(pfoe_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(pfoe_node ${catkin_LIBRARIES})
+target_link_libraries(pfoe_node Event ${catkin_LIBRARIES})
 
 #############
 ## Install ##
@@ -186,8 +186,3 @@ target_link_libraries(pfoe_node ${catkin_LIBRARIES})
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
-
-target_link_libraries(Episode Event)
-target_link_libraries(pfoe_node Event Episode ${catkin_LIBRARIES})
-add_dependencies(pfoe_node pfoe)
-

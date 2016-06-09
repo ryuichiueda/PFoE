@@ -8,12 +8,13 @@ using namespace std;
 
 class Event{
 public:
-	Event();
+	Event(string act, string sen, double rw);
 	string observation;
 	double reward;
 	string action;
 
 	double compare(Event *ref);
+	void flushData(ofstream *ofs);
 };
 
 #endif

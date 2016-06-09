@@ -3,11 +3,11 @@
 #include <string>
 using namespace std;
 
-Event::Event(string act, string sen, double rw)
+Event::Event(string act, string obs, double rw)
 {
 	reward = rw;
 	action = act;
-	sensor = sen;
+	observation = obs;
 }
 
 double Event::compare(Event *ref)
@@ -21,3 +21,8 @@ double Event::compare(Event *ref)
 
 	return 1.0;
 }
+
+void Event::flushData(ofstream *ofs)
+{       
+	*ofs << action << " " << reward << " " << observation << endl;
+}  

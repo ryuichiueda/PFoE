@@ -1,15 +1,17 @@
 #include "ros/ros.h"
-#include "pfoe/EventRegist.h"
 #include "Event.h"
+#include "pfoe/EventRegist.h"
+#include "pfoe/FlushData.h"
+#include "ParticleFilter.h"
 #include <iostream>
 #include <fstream>
 using namespace ros;
 
-Episode e;
+Episode episode;
 
 bool event_regist(pfoe::EventRegist::Request &req, pfoe::EventRegist::Response &res)
 {
-	e.append(Event(req.action,req.sensor,req.reward));
+	episode.push_back(Event(req.action,req.sensor,req.reward));
 
 	res.decision = "Y";
 
@@ -21,7 +23,9 @@ bool flush_data(pfoe::FlushData::Request &req, pfoe::FlushData::Response &res)
 	ofstream ofs(req.file);
 	if(req.type == "episode"){
 		ROS_INFO("Episode is flushed to %s.", req.file.c_str());
-		e.flushData(&ofs);
+		for(auto e : episode)
+			e.flushData(&ofs);
+
 		res.ok = true;
 	}else
 		res.ok = false;
