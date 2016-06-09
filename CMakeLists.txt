@@ -57,6 +57,7 @@ find_package(catkin REQUIRED COMPONENTS
 add_service_files(
   FILES
   EventRegist.srv
+  FlushData.srv
 )
 
 ## Generate actions in the 'action' folder
@@ -185,3 +186,12 @@ target_link_libraries(pfoe_node ${catkin_LIBRARIES})
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+
+add_library(Event src/Event.cpp)
+add_library(Episode src/Episode.cpp)
+
+
+target_link_libraries(Episode Event)
+target_link_libraries(pfoe_node Event Episode ${catkin_LIBRARIES})
+add_dependencies(pfoe_node pfoe)
+

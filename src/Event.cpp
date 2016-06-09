@@ -3,9 +3,11 @@
 #include <string>
 using namespace std;
 
-Event::Event()
+Event::Event(string act, string sen, double rw)
 {
-	reward = 0;
+	reward = rw;
+	action = act;
+	sensor = sen;
 }
 
 double Event::compare(Event *ref)
