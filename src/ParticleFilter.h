@@ -31,10 +31,6 @@ public:
 
 	void reset(Episode *ep);
 private:
-	//unsigned int getIntRand();
-//	double getDoubleRand();
-	//ifstream *m_rand_ifs;
-
 	void randomReset(Episode *e);
 	void retrospectiveReset(Episode *e);
 

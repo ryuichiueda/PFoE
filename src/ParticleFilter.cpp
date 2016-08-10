@@ -297,7 +297,8 @@ double ParticleFilter::getFuture(Episode *ep,string action)
 void ParticleFilter::update(void)
 {
 	//time shift
-	for(auto &p : particles){
+	for(auto &p : particles)
 		p.time++;
-	}
+
+	//Bayes
 }

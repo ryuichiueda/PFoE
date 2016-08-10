@@ -55,20 +55,16 @@ def act(n,action):
 
     time.sleep(0.3)
 
+def after_procedures():
+    flush_data("episode","/tmp/episode")
+
 if __name__ == "__main__":
+    rospy.on_shutdown(after_procedures)
     n = 0
     next_action = ""
-
-    flush_data("particles","/tmp/p1")
-    next_action = act(n,next_action)
-    flush_data("particles","/tmp/p2")
-    next_action = act(n,next_action)
-    flush_data("particles","/tmp/p3")
-    flush_data("episode","/tmp/episode")
-    sys.exit(0)
 
     for i in range(100):
         n = n + 1
         print n
+        flush_data("particles","/tmp/p%07d" % n)
         next_action = act(n,next_action)
-
