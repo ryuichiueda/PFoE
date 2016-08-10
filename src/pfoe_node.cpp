@@ -18,6 +18,8 @@ bool event_regist(pfoe::EventRegist::Request &req, pfoe::EventRegist::Response &
 	if(episode.size() < 2)
 		return true;
 
+	pf.update();
+
 	res.decision = "fw";
 
 	return true;
@@ -32,6 +34,9 @@ bool flush_data(pfoe::FlushData::Request &req, pfoe::FlushData::Response &res)
 			e.flushData(&ofs);
 
 		res.ok = true;
+	}else if(req.type == "particles"){
+		ROS_INFO("Particles' data is flushed to %s.", req.file.c_str());
+		pf.print(&ofs);
 	}else
 		res.ok = false;
 

@@ -17,4 +17,3 @@ Event * Episode::at(int i)
 void Episode::push_back(Event e){
 	events.push_back(e);
 }
-

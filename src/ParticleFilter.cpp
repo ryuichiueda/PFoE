@@ -15,7 +15,7 @@ ParticleFilter::ParticleFilter(int num)
 	double w = 1.0/num;
 	Particle p(w);
 	for(int i=0;i<num;i++){
-		m_particles.push_back(p);
+		particles.push_back(p);
 	}
 }
 
@@ -23,9 +23,6 @@ ParticleFilter::~ParticleFilter()
 {
 }
 
-void ParticleFilter::init(void)
-{
-}
 
 double ParticleFilter::likelihood(vector<int> &cur, vector<int> &past)
 {
@@ -40,12 +37,12 @@ double ParticleFilter::likelihood(vector<int> &cur, vector<int> &past)
 void ParticleFilter::sensorUpdate(Episode *ep)
 {
 	double sum = 0.0;
-	for(auto &p : m_particles){
+	for(auto &p : particles){
 		sum += p.weight;
 	}
 
 	//compare the current state
-	for(auto &p : m_particles){
+	for(auto &p : particles){
 		if(p.time >= (int)ep->size() - 1){
 			p.weight = 0.0;
 		}else{
@@ -55,14 +52,14 @@ void ParticleFilter::sensorUpdate(Episode *ep)
 	}
 
 	double w = 0.0;
-	for(auto &p : m_particles){
+	for(auto &p : particles){
 		w += p.weight;
 	}
 
 	if(w < 0.2){
 		reset(ep);
 	}else{
-		for(auto &p : m_particles){
+		for(auto &p : particles){
 			p.weight /= w;
 		}
 	}
@@ -70,8 +67,8 @@ void ParticleFilter::sensorUpdate(Episode *ep)
 
 void ParticleFilter::normalizeWeights(void)
 {
-	double w = 1.0 / m_particles.size();
-	for(auto &p : m_particles){
+	double w = 1.0 / particles.size();
+	for(auto &p : particles){
 		p.weight = w;
 	}
 }
@@ -79,26 +76,26 @@ void ParticleFilter::normalizeWeights(void)
 void ParticleFilter::motionUpdate(Episode *ep)
 {
 	if(ep->size() != 0){
-		for(auto &p : m_particles){
+		for(auto &p : particles){
 			Event *exp = ep->at(p.time);
 			if(ep->size() > 0 && exp->action != ep->events.back().action)
 				p.weight = 0.0;
 		}
 	}
 
-	for(auto &p : m_particles){
+	for(auto &p : particles){
 		p.time++;
 	}
 
 	double w = 0.0;
-	for(auto &p : m_particles){
+	for(auto &p : particles){
 		w += p.weight;
 	}
 
 	if(w < 0.2){
 		reset(ep);
 	}else{
-		for(auto &p : m_particles){
+		for(auto &p : particles){
 			p.weight /= w;
 		}
 	}
@@ -119,9 +116,9 @@ void ParticleFilter::randomReset(Episode *ep)
 		return;
 
 
-	for(auto &p : m_particles){
+	for(auto &p : particles){
 		p.time = prob.uniformRandInt(0,size-2); //getIntRand()%(size-1);
-		p.weight = 1.0/m_particles.size();
+		p.weight = 1.0/particles.size();
 	}
 }
 
@@ -134,7 +131,7 @@ void ParticleFilter::retrospectiveReset(Episode *ep)
 
 		Event *ref = ep->at(t);
 
-		for(auto &p : m_particles){
+		for(auto &p : particles){
 			if(p.time >= ep->size() - 1){
 				p.time = 0;
 				p.weight = 0.0;
@@ -157,7 +154,7 @@ void ParticleFilter::retrospectiveReset(Episode *ep)
 		}
 
 		double w = 0.0;
-		for(auto &p : m_particles){
+		for(auto &p : particles){
 			w += p.weight;
 		}
 	
@@ -165,7 +162,7 @@ void ParticleFilter::retrospectiveReset(Episode *ep)
 			randomReset(ep);
 			cerr << "reset" << endl;
 		}else{
-			for(auto &p : m_particles){
+			for(auto &p : particles){
 				p.weight /= w;
 			}
 		}
@@ -173,7 +170,7 @@ void ParticleFilter::retrospectiveReset(Episode *ep)
 		if(t == ep->size() - 1)
 			break;
 
-		for(auto &p : m_particles){
+		for(auto &p : particles){
 			p.time++;
 		}
 	}
@@ -185,18 +182,18 @@ void ParticleFilter::retrospectiveReset(Episode *ep)
 void ParticleFilter::resampling(void)
 {
 	vector<Particle> prev;
-	random_shuffle(m_particles.begin(),m_particles.end());
+	random_shuffle(particles.begin(),particles.end());
 
 	double suweighteight = 0.0;
-	int num = (int)m_particles.size();
+	int num = (int)particles.size();
 	for(int i = 0;i < num ;i++){
-		if(m_particles[i].weight < 0.00001)
+		if(particles[i].weight < 0.00001)
 			continue;
 
 		//weight is changed to the accumurated value
-		m_particles[i].weight += suweighteight;
-		suweighteight = m_particles[i].weight;
-		prev.push_back(m_particles[i]);
+		particles[i].weight += suweighteight;
+		suweighteight = particles[i].weight;
+		prev.push_back(particles[i]);
 	}
 	if(prev.size() == 0)
 		return;
@@ -218,8 +215,8 @@ void ParticleFilter::resampling(void)
 
 	for(int i=0;i<num;i++){
 		int j = choice[i];
-		m_particles[i] = prev[j];
-		m_particles[i].weight = 1.0/num;
+		particles[i] = prev[j];
+		particles[i].weight = 1.0/num;
 	}
 
 	delete [] choice;
@@ -243,7 +240,7 @@ double ParticleFilter::getDoubleRand()
 
 void ParticleFilter::print(ofstream *ofs)
 {
-	for(auto &p : m_particles){
+	for(auto &p : particles){
 		*ofs << p.time << " " << p.weight << endl;
 	}
 
@@ -253,7 +250,7 @@ void ParticleFilter::print(ofstream *ofs)
 double ParticleFilter::getWeight(Episode *e,string action)
 {
 	double w = 0;
-	for(auto &p : m_particles){
+	for(auto &p : particles){
 		int i = p.time;
 		if(i >= (int)e->size()-1)
 			continue;
@@ -270,7 +267,7 @@ double ParticleFilter::getFuture(Episode *ep,string action)
 {
 	double w = 0;
 //	int matched = 0;
-	for(auto &p : m_particles){
+	for(auto &p : particles){
 		int i = p.time;
 		if(i >= ep->size()-1)
 			continue;
@@ -295,4 +292,12 @@ double ParticleFilter::getFuture(Episode *ep,string action)
 //		return 100000.0;
 
 	return w;
+}
+
+void ParticleFilter::update(void)
+{
+	//time shift
+	for(auto &p : particles){
+		p.time++;
+	}
 }

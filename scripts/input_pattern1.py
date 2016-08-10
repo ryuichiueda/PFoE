@@ -8,11 +8,11 @@ from std_msgs.msg import String
 
 from pfoe.srv import EventRegist, FlushData
 
-def print_episode():
+def flush_data(datatype,filename):
     rospy.wait_for_service('/pfoe/flush_data')
     try:
         p = rospy.ServiceProxy('/pfoe/flush_data', FlushData)
-        res = p("/tmp/episode","episode")
+        res = p(filename,datatype)
     except rospy.ServiceException, e:
         print "Service call failed: %s"%e
     else:
@@ -59,9 +59,16 @@ if __name__ == "__main__":
     n = 0
     next_action = ""
 
+    flush_data("particles","/tmp/p1")
+    next_action = act(n,next_action)
+    flush_data("particles","/tmp/p2")
+    next_action = act(n,next_action)
+    flush_data("particles","/tmp/p3")
+    flush_data("episode","/tmp/episode")
+    sys.exit(0)
+
     for i in range(100):
         n = n + 1
         print n
         next_action = act(n,next_action)
 
-    print_episode()
