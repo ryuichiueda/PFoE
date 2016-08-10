@@ -27,7 +27,7 @@ public:
 	double getFuture(Episode *ep,string action);
 
 	void update(Episode *ep);
-	void bayes(Particle *p,Episode *ep);
+	double likelihood(Particle *p,Episode *ep);
 
 	void reset(Episode *ep);
 private:

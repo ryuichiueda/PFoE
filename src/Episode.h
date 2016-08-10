@@ -10,6 +10,7 @@ public:
 	vector<Event> events;
 	int size(void);
 	Event *at(int i);
+	Event *current(void);
 	void push_back(Event e);
 };
 

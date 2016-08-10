@@ -278,9 +278,13 @@ void ParticleFilter::update(Episode *ep)
 
 	//Bayes
 	for(auto &p : particles)
-		bayes(&p,ep);
+		p.weight *=likelihood(&p,ep);
 }
 
-void ParticleFilter::bayes(Particle *p,Episode *ep)
+double ParticleFilter::likelihood(Particle *p,Episode *ep)
 {
+	Event *past = ep->at(p->time);
+	Event *cur = ep->current();
+
+	return 0.0;
 }
