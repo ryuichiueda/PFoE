@@ -8,12 +8,15 @@
 using namespace ros;
 
 Episode episode;
+ParticleFilter pf(100);
 
 bool event_regist(pfoe::EventRegist::Request &req, pfoe::EventRegist::Response &res)
 {
 	episode.push_back(Event(req.action,req.sensor,req.reward));
+	if(episode.size() == 2)
+		pf.init();
 
-	res.decision = "Y";
+	res.decision = "fw";
 
 	return true;
 }
@@ -23,7 +26,7 @@ bool flush_data(pfoe::FlushData::Request &req, pfoe::FlushData::Response &res)
 	ofstream ofs(req.file);
 	if(req.type == "episode"){
 		ROS_INFO("Episode is flushed to %s.", req.file.c_str());
-		for(auto e : episode)
+		for(auto e : episode.events)
 			e.flushData(&ofs);
 
 		res.ok = true;
@@ -48,4 +51,3 @@ int main(int argc, char **argv)
 
 	return 0;
 }
-

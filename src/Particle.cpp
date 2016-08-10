@@ -3,5 +3,5 @@
 Particle::Particle(double w)
 {
 	weight = w;
-	event_index = -1;
+	time = 1;
 }

@@ -120,6 +120,7 @@ include_directories(include ${catkin_INCLUDE_DIRS} )
 
 ## Declare a C++ library
 add_library(Event src/Event.cpp)
+add_library(Episode src/Episode.cpp)
 add_library(Particle src/Particle.cpp)
 add_library(ParticleFilter src/ParticleFilter.cpp)
 
@@ -138,6 +139,9 @@ add_dependencies(pfoe_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(pfoe_node Event ${catkin_LIBRARIES})
+target_link_libraries(pfoe_node Episode ${catkin_LIBRARIES})
+target_link_libraries(pfoe_node ParticleFilter ${catkin_LIBRARIES})
+target_link_libraries(pfoe_node Particle ${catkin_LIBRARIES})
 
 #############
 ## Install ##

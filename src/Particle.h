@@ -7,7 +7,7 @@ public:
 	Particle(double w);
 	virtual ~Particle(){}
 	double weight;
-	int event_index;
+	int time;
 };
 
 #endif
