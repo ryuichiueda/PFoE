@@ -20,18 +20,21 @@ def print_episode():
 
     return True
 
-def act(n):
+def act(n,action):
     rospy.wait_for_service('/t_maze_return_path/action')
     rospy.wait_for_service('/pfoe/event_regist')
+
+    if action == "":
+    	action = "fw"
+
     try:
         exec_action = rospy.ServiceProxy('/t_maze_return_path/action',ExecAction)
 
-        action = "fw"
-        r = random.randint(0,2)
-        if r == 1:
-            action = "cw"
-        elif r == 2:
-            action = "ccw"
+#        r = random.randint(0,2)
+#        if r == 1:
+#            action = "cw#"
+#        elif r == 2:
+#            action = "ccw"
 
         res = exec_action(action)
 
@@ -54,11 +57,11 @@ def act(n):
 
 if __name__ == "__main__":
     n = 0
-    #while True:
+    next_action = ""
+
     for i in range(100):
-        print n
-        next_action = act(n)
         n = n + 1
-	print next_action
+        print n
+        next_action = act(n,next_action)
 
     print_episode()

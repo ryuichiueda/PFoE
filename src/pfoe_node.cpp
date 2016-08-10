@@ -13,8 +13,10 @@ ParticleFilter pf(100);
 bool event_regist(pfoe::EventRegist::Request &req, pfoe::EventRegist::Response &res)
 {
 	episode.push_back(Event(req.action,req.sensor,req.reward));
-	if(episode.size() == 2)
-		pf.init();
+	res.decision = "";
+
+	if(episode.size() < 2)
+		return true;
 
 	res.decision = "fw";
 
