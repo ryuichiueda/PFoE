@@ -35,7 +35,7 @@ private:
 	void retrospectiveReset(Episode *e);
 
 	void resampling(void);
-	double likelihood(vector<int> &cur, vector<int> &past);
+	//double likelihood(vector<int> &cur, vector<int> &past);
 
 	ProbDistributions prob;
 };

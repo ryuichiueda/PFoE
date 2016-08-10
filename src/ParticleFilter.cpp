@@ -24,6 +24,7 @@ ParticleFilter::~ParticleFilter()
 }
 
 
+/*
 double ParticleFilter::likelihood(vector<int> &cur, vector<int> &past)
 {
 	double delta = 0.0;
@@ -33,6 +34,7 @@ double ParticleFilter::likelihood(vector<int> &cur, vector<int> &past)
 
 	return pow(0.5,delta);
 }
+*/
 
 void ParticleFilter::sensorUpdate(Episode *ep)
 {
@@ -277,8 +279,9 @@ void ParticleFilter::update(Episode *ep)
 		p.time++;
 
 	//Bayes
-	for(auto &p : particles)
-		p.weight *=likelihood(&p,ep);
+	for(auto &p : particles){
+		p.weight *= likelihood(&p,ep);
+	}
 }
 
 double ParticleFilter::likelihood(Particle *p,Episode *ep)
@@ -286,5 +289,14 @@ double ParticleFilter::likelihood(Particle *p,Episode *ep)
 	Event *past = ep->at(p->time);
 	Event *cur = ep->current();
 
-	return 0.0;
+	if(past->reward != cur->reward)
+		return 0.0;
+
+	if(past->action != cur->action)
+		return 0.0;
+
+	if(past->observation != cur->observation)
+		return 0.0;
+
+	return 1.0;
 }

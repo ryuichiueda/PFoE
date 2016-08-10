@@ -20,31 +20,30 @@ def flush_data(datatype,filename):
 
     return True
 
-def act(n,action):
+def act(action):
     rospy.wait_for_service('/t_maze_return_path/action')
     rospy.wait_for_service('/pfoe/event_regist')
 
-    if action == "":
-    	action = "fw"
+    action = "fw"
+    r = random.randint(0,2)
+    if r == 1:
+        action = "cw"
+    elif r == 2:
+        action = "ccw"
 
     try:
         exec_action = rospy.ServiceProxy('/t_maze_return_path/action',ExecAction)
 
-#        r = random.randint(0,2)
-#        if r == 1:
-#            action = "cw#"
-#        elif r == 2:
-#            action = "ccw"
 
         res = exec_action(action)
 
     except rospy.ServiceException, e:
         print "EXECPTION"
 
- #       print action, res.result, res.sensor, res.reward
 
     try:
         sp = rospy.ServiceProxy('/pfoe/event_regist', EventRegist)
+	print action, res.sensor, res.reward
         res = sp(action,res.sensor,res.reward)
         time.sleep(0.3)
         return res.decision
@@ -63,8 +62,8 @@ if __name__ == "__main__":
     n = 0
     next_action = ""
 
-    for i in range(100):
-        n = n + 1
+    for i in range(12):
         print n
         flush_data("particles","/tmp/p%07d" % n)
-        next_action = act(n,next_action)
+        next_action = act(next_action)
+        n = n + 1
