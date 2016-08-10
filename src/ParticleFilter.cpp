@@ -143,14 +143,6 @@ void ParticleFilter::retrospectiveReset(Episode *ep)
 				p.weight = 0.0;
 			else
 				p.weight *= ref->compare(exp);
-/*
-			else if(exp->reward != ref->reward)
-				p.weight = 0.0;
-			else if(ref->action != "notyet" && exp->action != ref->action)
-				p.weight = 0.0;
-			else
-				p.weight *= likelihood(exp->sensor_values,ref->sensor_values);
-*/
 		}
 
 		double w = 0.0;
@@ -222,22 +214,6 @@ void ParticleFilter::resampling(void)
 	delete [] choice;
 }
 
-/*
-unsigned int ParticleFilter::getIntRand()
-{
-	char buf[4];
-	m_rand_ifs->read(buf,4);
-	return (buf[0]<<24) + (buf[1]<<16) + (buf[2]<<8) + buf[3];
-}
-*/
-
-/*
-double ParticleFilter::getDoubleRand()
-{
-	return (double)getIntRand() / UINT_MAX;
-}
-*/
-
 void ParticleFilter::print(ofstream *ofs)
 {
 	for(auto &p : particles){
@@ -294,11 +270,17 @@ double ParticleFilter::getFuture(Episode *ep,string action)
 	return w;
 }
 
-void ParticleFilter::update(void)
+void ParticleFilter::update(Episode *ep)
 {
 	//time shift
 	for(auto &p : particles)
 		p.time++;
 
 	//Bayes
+	for(auto &p : particles)
+		bayes(&p,ep);
+}
+
+void ParticleFilter::bayes(Particle *p,Episode *ep)
+{
 }

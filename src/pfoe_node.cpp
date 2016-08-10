@@ -18,7 +18,7 @@ bool event_regist(pfoe::EventRegist::Request &req, pfoe::EventRegist::Response &
 	if(episode.size() < 2)
 		return true;
 
-	pf.update();
+	pf.update(&episode);
 
 	res.decision = "fw";
 

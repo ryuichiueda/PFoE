@@ -13,7 +13,6 @@ class Event;
 class ParticleFilter
 {
 public:
-	//ParticleFilter(ifstream *ifs);
 	ParticleFilter(int num);
 	virtual ~ParticleFilter();
 
@@ -27,7 +26,8 @@ public:
 
 	double getFuture(Episode *ep,string action);
 
-	void update(void);
+	void update(Episode *ep);
+	void bayes(Particle *p,Episode *ep);
 
 	void reset(Episode *ep);
 private:
