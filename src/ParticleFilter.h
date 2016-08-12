@@ -38,6 +38,8 @@ private:
 	//double likelihood(vector<int> &cur, vector<int> &past);
 
 	ProbDistributions prob;
+
+	void replace(Particle *p,double weight,Episode *ep);
 };
 
 #endif

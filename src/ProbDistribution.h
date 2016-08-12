@@ -40,7 +40,6 @@ public:
 private:
 	random_device *rd;
 	mt19937 *gen;
-
 };
 
 #endif

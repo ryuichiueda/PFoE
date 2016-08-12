@@ -14,9 +14,8 @@ ParticleFilter::ParticleFilter(int num)
 {
 	double w = 1.0/num;
 	Particle p(w);
-	for(int i=0;i<num;i++){
+	for(int i=0;i<num;i++)
 		particles.push_back(p);
-	}
 }
 
 ParticleFilter::~ParticleFilter()
@@ -119,7 +118,7 @@ void ParticleFilter::reset(Episode *ep)
 void ParticleFilter::randomReset(Episode *ep)
 {
 	int size = ep->size();
-	if(size < 2)
+	if(size < 1)
 		return;
 
 
@@ -289,26 +288,38 @@ void ParticleFilter::update(Episode *ep)
 	//Bayes
 	Event *cur = ep->current();
 	for(auto &p : particles){
-		//Event *past = ep->at(p.time);
 		p.weight *= ep->at(p.time)->likelihood(cur);
+	}
+
+	//retrospectiveReset
+	double mu = 0.0;
+	int zero_num = 0;
+	for(auto &p : particles){
+		if(p.weight == 0.0)
+			zero_num++;
+		else
+			mu += p.weight; 
+	}
+	if(zero_num == 0)
+		return;
+
+	double w = (1.0 - mu)/zero_num;
+	for(auto &p : particles){
+		if(p.weight != 0.0)
+			continue;
+
+		replace(&p,w,ep);
 	}
 }
 
-/*
-double ParticleFilter::likelihood(Particle *p,Episode *ep)
+void ParticleFilter::replace(Particle *p,double weight,Episode *ep)
 {
-	Event *past = ep->at(p->time);
-	Event *cur = ep->current();
+	int size = ep->size();
+	if(size < 2)
+		return;
 
-	if(past->reward != cur->reward)
-		return 0.0;
-
-	if(past->action != cur->action)
-		return 0.0;
-
-	if(past->observation != cur->observation)
-		return 0.0;
-
-	return 1.0;
+	for(auto &p : particles){
+		p.time = prob.uniformRandInt(1,size-1);
+		p.weight = weight;
+	}
 }
-*/
