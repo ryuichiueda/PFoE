@@ -6,11 +6,12 @@ using namespace std;
 Event::Event(string act, string obs, double rw)
 {
 	reward = rw;
+	value = 0.0;
 	action = act;
 	observation = obs;
 }
 
-double Event::compare(Event *ref)
+double Event::likelihood(Event *ref)
 {
 	if(action != ref->action)
 		return 0.0;
@@ -24,5 +25,5 @@ double Event::compare(Event *ref)
 
 void Event::flushData(ofstream *ofs)
 {       
-	*ofs << action << " " << reward << " " << observation << endl;
+	*ofs << action << " " << observation << " " << reward << " " << value << endl;
 }  

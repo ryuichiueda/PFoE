@@ -36,6 +36,7 @@ double ParticleFilter::likelihood(vector<int> &cur, vector<int> &past)
 }
 */
 
+/*
 void ParticleFilter::sensorUpdate(Episode *ep)
 {
 	double sum = 0.0;
@@ -66,6 +67,7 @@ void ParticleFilter::sensorUpdate(Episode *ep)
 		}
 	}
 }
+*/
 
 void ParticleFilter::normalizeWeights(void)
 {
@@ -75,6 +77,7 @@ void ParticleFilter::normalizeWeights(void)
 	}
 }
 
+/*
 void ParticleFilter::motionUpdate(Episode *ep)
 {
 	if(ep->size() != 0){
@@ -104,7 +107,9 @@ void ParticleFilter::motionUpdate(Episode *ep)
 
 	resampling();
 }
+*/
 
+/*
 void ParticleFilter::reset(Episode *ep)
 {
 //	randomReset(e);
@@ -123,7 +128,9 @@ void ParticleFilter::randomReset(Episode *ep)
 		p.weight = 1.0/particles.size();
 	}
 }
+*/
 
+/*
 void ParticleFilter::retrospectiveReset(Episode *ep)
 {
 	randomReset(ep);
@@ -215,6 +222,7 @@ void ParticleFilter::resampling(void)
 
 	delete [] choice;
 }
+*/
 
 void ParticleFilter::print(ofstream *ofs)
 {
@@ -279,11 +287,14 @@ void ParticleFilter::update(Episode *ep)
 		p.time++;
 
 	//Bayes
+	Event *cur = ep->current();
 	for(auto &p : particles){
-		p.weight *= likelihood(&p,ep);
+		//Event *past = ep->at(p.time);
+		p.weight *= ep->at(p.time)->likelihood(cur);
 	}
 }
 
+/*
 double ParticleFilter::likelihood(Particle *p,Episode *ep)
 {
 	Event *past = ep->at(p->time);
@@ -300,3 +311,4 @@ double ParticleFilter::likelihood(Particle *p,Episode *ep)
 
 	return 1.0;
 }
+*/

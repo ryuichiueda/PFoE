@@ -11,9 +11,10 @@ public:
 	Event(string act, string sen, double rw);
 	string observation;
 	double reward;
+	double value;
 	string action;
 
-	double compare(Event *ref);
+	double likelihood(Event *ref);
 	void flushData(ofstream *ofs);
 };
 

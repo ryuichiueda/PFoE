@@ -16,8 +16,8 @@ public:
 	ParticleFilter(int num);
 	virtual ~ParticleFilter();
 
-	void sensorUpdate(Episode *ep);
-	void motionUpdate(Episode *ep);
+	//void sensorUpdate(Episode *ep);
+	//void motionUpdate(Episode *ep);
 
 	void normalizeWeights(void);
 	vector<Particle> particles;
@@ -27,14 +27,14 @@ public:
 	double getFuture(Episode *ep,string action);
 
 	void update(Episode *ep);
-	double likelihood(Particle *p,Episode *ep);
+	//double likelihood(Particle *p,Episode *ep);
 
 	void reset(Episode *ep);
 private:
-	void randomReset(Episode *e);
-	void retrospectiveReset(Episode *e);
+	//void randomReset(Episode *e);
+	//void retrospectiveReset(Episode *e);
 
-	void resampling(void);
+	//void resampling(void);
 	//double likelihood(vector<int> &cur, vector<int> &past);
 
 	ProbDistributions prob;

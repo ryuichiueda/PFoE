@@ -6,12 +6,15 @@
 class Episode
 {
 public:
-	Episode();
+	Episode(int backtrack, double discount);
 	vector<Event> events;
 	int size(void);
 	Event *at(int i);
 	Event *current(void);
 	void push_back(Event e);
+private:
+	int backtrack_threshold;
+	double discount_rate;
 };
 
 #endif

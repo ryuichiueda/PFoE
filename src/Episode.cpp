@@ -1,7 +1,9 @@
 #include "Episode.h"
 
-Episode::Episode()
+Episode::Episode(int backtrack, double discount)
 {
+	backtrack_threshold = backtrack;
+	discount_rate = 0.9;
 }
 
 int Episode::size(void)
@@ -16,8 +18,16 @@ Event* Episode::at(int i)
 
 void Episode::push_back(Event e){
 	events.push_back(e);
-}
 
+	int n = 1;
+	double v_next = 0.0;
+	for (auto it = events.rbegin(); it != events.rend(); it++){
+		it->value = v_next*discount_rate + it->reward; 	
+		v_next = it->value;
+		if(n++ >= backtrack_threshold)
+			return;
+	}
+}
 
 Event* Episode::current(void)
 {
