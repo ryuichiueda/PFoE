@@ -15,6 +15,7 @@ class ParticleFilter
 {
 public:
 	vector<Particle> particles;
+	vector<Particle> retro_particles;
 
 	ParticleFilter(int num);
 	virtual ~ParticleFilter();
@@ -31,8 +32,14 @@ private:
 
 	ProbDistributions prob;
 
-	void replace(Particle *p,double weight,Episode *ep);
+	//void replace(Particle *p,double weight,Episode *ep);
 	double evaluateAction(string action, Episode *ep);
+
+	void moveAndBayes(Episode *ep,vector<Particle> *ps);
+	void retrospectiveFilter(Episode *ep,vector<Particle> *ps,int step);
+
+	void resampling(vector<Particle> *ps);
+	double sumWeight(vector<Particle> *ps);
 };
 
 #endif

@@ -8,7 +8,7 @@
 #include <fstream>
 using namespace ros;
 
-Episode episode(100,0.9);
+Episode episode(100,0.99);
 ParticleFilter pf(100);
 
 bool action_regist(pfoe::ActionRegist::Request &req, pfoe::ActionRegist::Response &res)

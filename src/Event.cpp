@@ -13,14 +13,15 @@ Event::Event(string act, string obs, double rw)
 
 double Event::likelihood(Event *ref)
 {
+	double ans = 1.0;
 	if(action != ref->action)
-		return 0.0;
+		ans /= 10;
 	if(reward != ref->reward)
-		return 0.0;
+		ans /= 10;
 	else if(observation != ref->observation)
-		return 0.0;
+		ans /= 10;
 
-	return 1.0;
+	return ans;
 }
 
 void Event::flushData(ofstream *ofs)

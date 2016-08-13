@@ -3,7 +3,7 @@
 Episode::Episode(int backtrack, double discount)
 {
 	backtrack_threshold = backtrack;
-	discount_rate = 0.9;
+	discount_rate = discount;
 }
 
 int Episode::size(void)
