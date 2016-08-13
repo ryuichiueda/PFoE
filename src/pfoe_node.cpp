@@ -20,14 +20,13 @@ bool action_regist(pfoe::ActionRegist::Request &req, pfoe::ActionRegist::Respons
 bool event_regist(pfoe::EventRegist::Request &req, pfoe::EventRegist::Response &res)
 {
 	episode.push_back(Event(req.action,req.sensor,req.reward));
-	res.decision = "";
+	res.decision = "fw";
 
 	if(episode.size() < 2)
 		return true;
 
 	pf.update(&episode);
-
-	res.decision = "fw";
+	res.decision = pf.decision(&episode);
 
 	return true;
 }

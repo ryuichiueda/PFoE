@@ -32,6 +32,7 @@ private:
 	ProbDistributions prob;
 
 	void replace(Particle *p,double weight,Episode *ep);
+	double evaluateAction(string action, Episode *ep);
 };
 
 #endif

@@ -6,7 +6,7 @@ import random
 from t_maze_return_path.srv import ExecAction,ExecActionResponse
 from std_msgs.msg import String
 
-from pfoe.srv import EventRegist, FlushData
+from pfoe.srv import EventRegist, ActionRegist, FlushData
 
 def flush_data(datatype,filename):
     rospy.wait_for_service('/pfoe/flush_data')
@@ -20,21 +20,23 @@ def flush_data(datatype,filename):
 
     return True
 
+def regist(action):
+    rospy.wait_for_service('/pfoe/action_regist')
+    try:
+        sp = rospy.ServiceProxy('/pfoe/action_regist', ActionRegist)
+        res = sp(action)
+        return res.ok
+    except rospy.ServiceException, e:
+        print "Service call failed: %s"%e
+    else:
+        return ""
+
 def act(action):
     rospy.wait_for_service('/t_maze_return_path/action')
     rospy.wait_for_service('/pfoe/event_regist')
 
-    action = "fw"
-    r = random.randint(0,2)
-    if r == 1:
-        action = "cw"
-    elif r == 2:
-        action = "ccw"
-
     try:
         exec_action = rospy.ServiceProxy('/t_maze_return_path/action',ExecAction)
-
-
         res = exec_action(action)
 
     except rospy.ServiceException, e:
@@ -59,10 +61,16 @@ def after_procedures():
 
 if __name__ == "__main__":
     rospy.on_shutdown(after_procedures)
-    n = 0
-    next_action = ""
 
-    for i in range(12):
+    regist("fw")
+    regist("cw")
+    regist("ccw")
+
+    n = 0
+    next_action = "fw"
+
+
+    for i in range(10000):
         print n
         flush_data("particles","/tmp/p%07d" % n)
         next_action = act(next_action)

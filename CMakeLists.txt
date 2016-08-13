@@ -57,6 +57,7 @@ find_package(catkin REQUIRED COMPONENTS
 add_service_files(
   FILES
   EventRegist.srv
+  ActionRegist.srv
   FlushData.srv
 )
 

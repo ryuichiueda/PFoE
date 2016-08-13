@@ -322,5 +322,41 @@ void ParticleFilter::replace(Particle *p,double weight,Episode *ep)
 
 string ParticleFilter::decision(Episode *ep)
 {
-	return "";
+	std::shuffle(actions.begin(), actions.end(), std::mt19937());
+
+	string max_act = "fw";
+	double max_eval = -1e100;
+	for(auto a : actions){
+		double eval = evaluateAction(a,ep);
+		cerr << a << ": " << eval << endl;
+		if(eval <= max_eval)
+			continue;
+
+		max_eval = eval;
+		max_act = a;
+	}
+
+	if(max_eval < 0.0)
+		return actions[0];
+
+	return max_act;
+}
+
+double ParticleFilter::evaluateAction(string action, Episode *ep)
+{
+	double sum_value = 0.0;
+	double sum_weight = 0.0;
+	for(auto &p : particles){
+		Event *next = ep->at(p.time+1);
+		if(next->action != action)
+			continue;
+
+		sum_value = next->value*p.weight;
+		sum_weight = p.weight;
+	}
+
+	if(sum_weight == 0.0)
+		return 0.0;
+
+	return sum_value/sum_weight;
 }
