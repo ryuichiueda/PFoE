@@ -1,0 +1,9 @@
+<launch>
+  <group ns="t_maze_return_path">
+    <node pkg="t_maze_return_path" name="environment" type="environment_pos_known.py" output="screen" required="true" />
+  </group>
+  <group ns="pfoe">
+    <node pkg="pfoe" name="pfoe_node" type="pfoe_node" output="screen" required="true" />
+    <node pkg="pfoe" name="pattern1" type="input_pattern1.py" required="true" />
+  </group>
+</launch>
