@@ -96,6 +96,40 @@ void ParticleFilter::retrospectiveFilter(Episode *ep,vector<Particle> *ps,int st
 {
 	cerr << "retrospectiveFilter" << endl;
 	for(auto &p : *ps){
+		p.time = prob.uniformRandInt(1,ep->size()-1);
+		p.weight = 1.0/ps->size();
+	}
+
+	int count = 0;
+	for(int i=0;i<step;i++){
+		//Bayes
+		if(ep->size()-i <= 1)
+			break;
+
+		Event *cur = ep->at(ep->size()-i);
+		for(auto &p : *ps){
+			p.weight *= ep->at(p.time)->likelihood(cur);
+		}
+		resampling(ps);
+		//time shift
+		for(auto &p : *ps){
+			p.time--;
+			if(p.time == 0)
+				p.time = 1;
+		}
+		count++;
+	}
+
+	for(auto &p : *ps){
+		p.time += count;
+		if(p.time >= ep->size())
+			p.time = ep->size()-1;
+	}
+
+
+
+	/*
+	for(auto &p : *ps){
 		int start_time = ep->size() - 1 - step;
 		if(start_time < 1)
 			start_time = 1;
@@ -105,18 +139,22 @@ void ParticleFilter::retrospectiveFilter(Episode *ep,vector<Particle> *ps,int st
 	}
 
 	for(int i=0;i<step;i++){
-		moveAndBayes(ep,ps);
+		int size = (int)ep->size();
+		Event *cur = ep->at(size-step+i+1);
+		moveAndBayes(ep,ps,cur);
 		for(auto &p : *ps){
 			if(p.time == ep->size())
 				p.time = 0;
 		}
 		resampling(ps);
 	}
+	*/
 }
 
 void ParticleFilter::update(Episode *ep)
 {
-	moveAndBayes(ep,&particles);
+	Event *cur = ep->current();
+	moveAndBayes(ep,&particles,cur);
 	double sum = 0.0;
 	for(auto p : particles)
 		sum += p.weight;
@@ -127,14 +165,13 @@ void ParticleFilter::update(Episode *ep)
 		retrospectiveFilter(ep,&particles,20);
 }
 
-void ParticleFilter::moveAndBayes(Episode *ep,vector<Particle> *ps)
+void ParticleFilter::moveAndBayes(Episode *ep,vector<Particle> *ps,Event *cur)
 {
 	//time shift
 	for(auto &p : *ps)
 		p.time++;
 
 	//Bayes
-	Event *cur = ep->current();
 	for(auto &p : *ps){
 		p.weight *= ep->at(p.time)->likelihood(cur);
 	}

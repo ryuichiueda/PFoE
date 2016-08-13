@@ -47,7 +47,7 @@ def act(action):
         sp = rospy.ServiceProxy('/pfoe/event_regist', EventRegist)
 	print action, res.sensor, res.reward
         res = sp(action,res.sensor,res.reward)
-        time.sleep(0.1)
+        #time.sleep(0.1)
         return res.decision
     except rospy.ServiceException, e:
         print "Service call failed: %s"%e

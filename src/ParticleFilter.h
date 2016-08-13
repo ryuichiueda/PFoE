@@ -35,7 +35,7 @@ private:
 	//void replace(Particle *p,double weight,Episode *ep);
 	double evaluateAction(string action, Episode *ep);
 
-	void moveAndBayes(Episode *ep,vector<Particle> *ps);
+	void moveAndBayes(Episode *ep,vector<Particle> *ps,Event *cur);
 	void retrospectiveFilter(Episode *ep,vector<Particle> *ps,int step);
 
 	void resampling(vector<Particle> *ps);
