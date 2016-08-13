@@ -41,7 +41,6 @@ void ParticleFilter::normalizeWeights(void)
 
 void ParticleFilter::resampling(vector<Particle> *ps)
 {
-	cerr << "resampling" << endl;
 	vector<Particle> prev;
 	std::shuffle(ps->begin(),ps->end(),std::mt19937());
 
@@ -94,7 +93,7 @@ void ParticleFilter::print(ofstream *ofs)
 
 void ParticleFilter::retrospectiveFilter(Episode *ep,vector<Particle> *ps,int step)
 {
-	cerr << "retrospectiveFilter" << endl;
+	cerr << "             !!!!!!!!!!!!!!!!" << endl;
 	for(auto &p : *ps){
 		p.time = prob.uniformRandInt(1,ep->size()-1);
 		p.weight = 1.0/ps->size();
@@ -109,6 +108,7 @@ void ParticleFilter::retrospectiveFilter(Episode *ep,vector<Particle> *ps,int st
 		Event *cur = ep->at(ep->size()-i);
 		for(auto &p : *ps){
 			p.weight *= ep->at(p.time)->likelihood(cur);
+			p.weight += 0.000001;
 		}
 		resampling(ps);
 		//time shift
@@ -159,7 +159,8 @@ void ParticleFilter::update(Episode *ep)
 	for(auto p : particles)
 		sum += p.weight;
 
-	if(sum >= 0.5){
+	cerr << "sum of weights: " << sum << endl;
+	if(sum > 0.001){
 		resampling(&particles);
 	}else
 		retrospectiveFilter(ep,&particles,20);
@@ -210,7 +211,7 @@ string ParticleFilter::decision(Episode *ep)
 
 	cerr << endl;
 
-	if(max_eval < 0.0)
+	if(rand()%10 == 0)
 		return actions[0];
 
 	return max_act;

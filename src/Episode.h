@@ -12,6 +12,8 @@ public:
 	Event *at(int i);
 	Event *current(void);
 	void push_back(Event e);
+
+	void flushData(ofstream *ofs);
 private:
 	int backtrack_threshold;
 	double discount_rate;

@@ -67,9 +67,10 @@ if __name__ == "__main__":
     n = 0
     next_action = "fw"
 
-
-    for i in range(10000):
+    for i in range(1000000):
         print n
         flush_data("particles","/tmp/p%07d" % n)
+        if n%10000 == 0:
+            flush_data("episode","/tmp/episode")
         next_action = act(next_action)
         n = n + 1

@@ -15,7 +15,6 @@ public:
 	string action;
 
 	double likelihood(Event *ref);
-	void flushData(ofstream *ofs);
 };
 
 #endif

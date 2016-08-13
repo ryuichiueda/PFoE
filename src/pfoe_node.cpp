@@ -8,8 +8,8 @@
 #include <fstream>
 using namespace ros;
 
-Episode episode(100,0.99);
-ParticleFilter pf(100);
+Episode episode(1000,0.99);
+ParticleFilter pf(1000);
 
 bool action_regist(pfoe::ActionRegist::Request &req, pfoe::ActionRegist::Response &res)
 {
@@ -28,6 +28,7 @@ bool event_regist(pfoe::EventRegist::Request &req, pfoe::EventRegist::Response &
 	pf.update(&episode);
 	res.decision = pf.decision(&episode);
 
+	system("clear");
 	return true;
 }
 
@@ -36,8 +37,7 @@ bool flush_data(pfoe::FlushData::Request &req, pfoe::FlushData::Response &res)
 	ofstream ofs(req.file);
 	if(req.type == "episode"){
 		ROS_INFO("Episode is flushed to %s.", req.file.c_str());
-		for(auto e : episode.events)
-			e.flushData(&ofs);
+		episode.flushData(&ofs);
 
 		res.ok = true;
 	}else if(req.type == "particles"){

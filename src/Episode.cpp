@@ -33,3 +33,11 @@ Event* Episode::current(void)
 {
 	return &events.back();
 }
+
+void Episode::flushData(ofstream *ofs)
+{       
+	int n = 0;
+	for(auto e : events)
+		*ofs << ++n << " " << e.action << " " << e.observation << " "
+			<< e.reward << " " << e.value << endl;
+}  
