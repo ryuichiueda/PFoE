@@ -1,6 +1,7 @@
 #include "ros/ros.h"
 #include "Event.h"
 #include "pfoe/EventRegist.h"
+#include "pfoe/ActionRegist.h"
 #include "pfoe/FlushData.h"
 #include "ParticleFilter.h"
 #include <iostream>
@@ -9,6 +10,12 @@ using namespace ros;
 
 Episode episode(100,0.9);
 ParticleFilter pf(100);
+
+bool action_regist(pfoe::ActionRegist::Request &req, pfoe::ActionRegist::Response &res)
+{
+	res.ok = pf.registAction(req.action);
+	return true;
+}
 
 bool event_regist(pfoe::EventRegist::Request &req, pfoe::EventRegist::Response &res)
 {
@@ -51,6 +58,7 @@ int main(int argc, char **argv)
 	NodeHandle n;
 
 	ros::ServiceServer s1 = n.advertiseService("event_regist", event_regist);
+	ros::ServiceServer sa = n.advertiseService("action_regist", action_regist);
 	ros::ServiceServer s2 = n.advertiseService("flush_data", flush_data);
 	ROS_INFO("Ready to regist events.");
 

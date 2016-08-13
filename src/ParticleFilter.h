@@ -4,6 +4,7 @@
 #include "ProbDistribution.h"
 #include "Episode.h"
 #include <vector>
+#include <string>
 #include <fstream>
 using namespace std;
 
@@ -13,29 +14,20 @@ class Event;
 class ParticleFilter
 {
 public:
+	vector<Particle> particles;
+
 	ParticleFilter(int num);
 	virtual ~ParticleFilter();
 
-	//void sensorUpdate(Episode *ep);
-	//void motionUpdate(Episode *ep);
-
 	void normalizeWeights(void);
-	vector<Particle> particles;
+	bool registAction(string action);
 
 	void print(ofstream *ofs);
-
-	double getFuture(Episode *ep,string action);
-
 	void update(Episode *ep);
-	//double likelihood(Particle *p,Episode *ep);
-
 	void reset(Episode *ep);
+	string decision(Episode *ep);
 private:
-	//void randomReset(Episode *e);
-	//void retrospectiveReset(Episode *e);
-
-	//void resampling(void);
-	//double likelihood(vector<int> &cur, vector<int> &past);
+	vector<string> actions;
 
 	ProbDistributions prob;
 

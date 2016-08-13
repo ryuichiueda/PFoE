@@ -22,18 +22,12 @@ ParticleFilter::~ParticleFilter()
 {
 }
 
-
-/*
-double ParticleFilter::likelihood(vector<int> &cur, vector<int> &past)
+bool ParticleFilter::registAction(string action)
 {
-	double delta = 0.0;
-	for(int i=0;i<4;i++){
-		delta += 1.0*abs(cur[i] - past[i])/4000;
-	}
-
-	return pow(0.5,delta);
+	actions.push_back(action);
+	return true;
 }
-*/
+
 
 /*
 void ParticleFilter::sensorUpdate(Episode *ep)
@@ -248,6 +242,7 @@ double ParticleFilter::getWeight(Episode *e,string action)
 }
 */
 
+/*
 double ParticleFilter::getFuture(Episode *ep,string action)
 {
 	double w = 0;
@@ -278,6 +273,7 @@ double ParticleFilter::getFuture(Episode *ep,string action)
 
 	return w;
 }
+*/
 
 void ParticleFilter::update(Episode *ep)
 {
@@ -322,4 +318,9 @@ void ParticleFilter::replace(Particle *p,double weight,Episode *ep)
 		p.time = prob.uniformRandInt(1,size-1);
 		p.weight = weight;
 	}
+}
+
+string ParticleFilter::decision(Episode *ep)
+{
+	return "";
 }
